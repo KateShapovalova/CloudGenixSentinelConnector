@@ -72,7 +72,7 @@
 			"description": ">**(Optional Step)** Securely store workspace and API authorization key(s) or token(s) in Azure Key Vault. Azure Key Vault provides a secure mechanism to store and retrieve key values. [Follow these instructions](https://docs.microsoft.com/azure/app-service/app-service-key-vault-references) to use Azure Key Vault with an Azure Function App."
 		},
 		{
-			"description": ">**NOTE:** This data connector depends on a parser based on a Kusto Function to work as expected [**CloudGenix**](https://aka.ms/sentinel-CloudGenix-parser) which is deployed with the Azure Sentinel Solution."
+			"description": ">**NOTE:** This data connector depends on a parser based on a Kusto Function to work as expected [**CloudGenix**](https://github.com/KateShapovalova/CloudGenixSentinelConnector/blob/master/parsers/CloudGenix.txt) which is deployed with the Azure Sentinel Solution."
 		},
 		{
 			"title": "",
