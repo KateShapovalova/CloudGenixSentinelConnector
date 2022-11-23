@@ -159,7 +159,7 @@
                         "CloudGenixServerURL": "[parameters('CloudGenixServerURL')]",
                         "CloudGenixEmail": "[parameters('CloudGenixEmail')]",
                         "CloudGenixPassword": "[parameters('CloudGenixPassword')]",
-                        "WEBSITE_RUN_FROM_PACKAGE": "https://github.com/KateShapovalova/CloudGenixSentinelConnector/blob/master/CloudGenixAPI_FunctionApp.json"
+                        "WEBSITE_RUN_FROM_PACKAGE": "https://github.com/KateShapovalova/CloudGenixSentinelConnector/raw/master/CloudGenixSentinelConn.zip"
                         
                     }
                 }
