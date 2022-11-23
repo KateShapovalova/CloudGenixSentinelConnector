@@ -113,8 +113,11 @@ def main(mytimer: func.TimerRequest) -> None:
     start_time, end_time = generate_date()
     logging.info('Data processing. Period(UTC): {} - {}'.format(start_time, end_time))
 
+    logging.info("email: ", email)
+    logging.info("password: ", password)
     token = login(email=email, password=password, server_url=dispatcher)
     headers = {"x-auth-token": token}
+    logging.info("x-auth-token: ", token)
     profile = get_profile(headers=headers)
     elements = get_elements(headers=headers, profile=profile)
     sites = get_sites(headers=headers, profile=profile)
