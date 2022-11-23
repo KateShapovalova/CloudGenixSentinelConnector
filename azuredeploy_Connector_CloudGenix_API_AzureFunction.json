@@ -14,7 +14,7 @@
         },
         "WorkspaceKey": {
             "type": "securestring",
-            "defaultValue": "<workspaceKey>"
+            "defaultValue": ""
         },
         "CloudGenixServerURL": {
             "type": "string",
@@ -22,11 +22,11 @@
         },
         "CloudGenixEmail": {
             "type": "securestring",
-            "defaultValue": "<CloudGenixEmail>"
+            "defaultValue": ""
         },
         "CloudGenixPassword": {
             "type": "securestring",
-            "defaultValue": "<CloudGenixPassword>"
+            "defaultValue": ""
         }
     },
     "variables": {
