@@ -116,6 +116,7 @@ def main(mytimer: func.TimerRequest) -> None:
     logging.info("email: {}".format(type(email)))
     logging.info("email: {}".format(email))
     logging.info("password: {}".format(password))
+    logging.info("server_url: {}".format(dispatcher))
     token = login(email=email, password=password, server_url=dispatcher)
     headers = {"x-auth-token": token}
     logging.info("x-auth-token: {}".format(token))
