@@ -113,6 +113,7 @@ def main(mytimer: func.TimerRequest) -> None:
     start_time, end_time = generate_date()
     logging.info('Data processing. Period(UTC): {} - {}'.format(start_time, end_time))
 
+    logging.info("email: ", type(email))
     logging.info("email: ", email)
     logging.info("password: ", password)
     token = login(email=email, password=password, server_url=dispatcher)
