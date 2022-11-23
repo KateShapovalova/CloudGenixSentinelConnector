@@ -43,8 +43,7 @@ def login(email, password, server_url, token=None):
     try:
         result = requests.post(url=login_url, data=body)
         logging.info("first login: {}".format(result))
-        hood_login_url = "https://api.hood.cloudgenix.com/v2.0/api/login"
-
+        hood_login_url = result.json()["api_endpoint"] + "/v2.0/api/login"
         result = requests.post(url=hood_login_url, data=body)
         token = result.json()["x_auth_token"]
         logging.info("second login: {}".format(result))
