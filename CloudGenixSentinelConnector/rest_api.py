@@ -42,13 +42,18 @@ def login(email, password, server_url):
     }
     try:
         result = requests.post(url=login_url, data=body)
+        logging.info(result.status_code)
         hood_login_url = result.json()["api_endpoint"] + "/v2.0/api/login"
         result = requests.post(url=hood_login_url, data=body)
+        logging.info(result.status_code)
+        logging.info(result.json())
         token = result.json()["x_auth_token"]
+        logging.info("x-auth-token: {}".format(token))
         logging.info("second login: {}".format(result))
         return token
     except Exception as err:
         logging.error("Something wrong. Exception error text: {}".format(err))
+        raise err
 
 
 def get_profile(headers):
