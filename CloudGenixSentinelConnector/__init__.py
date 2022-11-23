@@ -4,7 +4,7 @@ import hashlib
 import hmac
 import base64
 import logging
-from rest_api import login, get_profile, get_elements, get_sites, get_events, get_appdefs, transform_events
+from .rest_api import login, get_profile, get_elements, get_sites, get_events, get_appdefs, transform_events
 import os
 from datetime import datetime, timedelta
 import json
