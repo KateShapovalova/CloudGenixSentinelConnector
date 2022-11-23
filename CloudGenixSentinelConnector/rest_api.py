@@ -34,7 +34,7 @@ descriptions = {
 }
 
 
-def login(email, password, server_url, token=None):
+def login(email, password, server_url):
     login_url = server_url + "/v2.0/api/login"
     body = {
         "email": email,
@@ -42,14 +42,13 @@ def login(email, password, server_url, token=None):
     }
     try:
         result = requests.post(url=login_url, data=body)
-        logging.info("first login: {}".format(result.json()))
         hood_login_url = result.json()["api_endpoint"] + "/v2.0/api/login"
         result = requests.post(url=hood_login_url, data=body)
         token = result.json()["x_auth_token"]
         logging.info("second login: {}".format(result))
+        return token
     except Exception as err:
         logging.error("Something wrong. Exception error text: {}".format(err))
-    return token
 
 
 def get_profile(headers):
