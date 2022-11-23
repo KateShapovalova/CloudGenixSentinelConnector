@@ -1,0 +1,153 @@
+{
+   "name": "CloudGenix_CL",
+   "Properties": [
+       {
+           "Name": "TimeGenerated",
+           "Type": "DateTime"
+       },
+       {
+           "Name": "EventVendor",
+           "Type": "String"
+       },
+       {
+           "Name": "EventProduct",
+           "Type": "String"
+       },
+       {
+           "Name": "EventCount",
+           "Type": "String"
+       },
+       {
+           "Name": "CreatedAt",
+           "Type": "DateTime"
+       },
+       {
+           "Name": "EventStartTime",
+           "Type": "DateTime"
+       },
+       {
+           "Name": "EventEndTime",
+           "Type": "DateTime"
+       },
+       {
+           "Name": "Severity",
+           "Type": "String"
+       },
+       {
+           "Name": "FaultCode",
+           "Type": "String"
+       },
+       {
+           "Name": "Description",
+           "Type": "String"
+       },
+       {
+           "Name": "EventSubType",
+           "Type": "String"
+       },
+       {
+           "Name": "EventOriginalUid",
+           "Type": "String"
+       },
+       {
+           "Name": "DvcIpAddr",
+           "Type": "String"
+       },
+       {
+           "Name": "DvcHostname",
+           "Type": "String"
+       },
+       {
+           "Name": "CorrelationId",
+           "Type": "String"
+       },
+       {
+           "Name": "Site",
+           "Type": "String"
+       },
+       {
+           "Name": "Entity",
+           "Type": "String"
+       },
+       {
+           "Name": "Element",
+           "Type": "String"
+       },
+       {
+           "Name": "Reason",
+           "Type": "String"
+       },
+       {
+           "Name": "SrcAppName",
+           "Type": "String"
+       },
+       {
+           "Name": "VpnLinks",
+           "Type": "String"
+       },
+       {
+           "Name": "CircuitLabels",
+           "Type": "String"
+       },
+       {
+           "Name": "Etag",
+           "Type": "Double"
+       },
+       {
+           "Name": "Acknowledged",
+           "Type": "Boolean"
+       },
+       {
+           "Name": "Cleared",
+           "Type": "Boolean"
+       },
+       {
+           "Name": "ExtendedState",
+           "Type": "String"
+       },
+       {
+           "Name": "ParentInterface",
+           "Type": "String"
+       },
+       {
+           "Name": "NetworkPolicySets",
+           "Type": "String"
+       },
+       {
+           "Name": "NetworkPolicySetStack",
+           "Type": "String"
+       },
+       {
+           "Name": "NetworkPolicyRules",
+           "Type": "String"
+       },
+       {
+           "Name": "MissingLabels",
+           "Type": "String"
+       },
+       {
+           "Name": "RuleType",
+           "Type": "String"
+       },
+       {
+           "Name": "ConflictAppId",
+           "Type": "String"
+       },
+       {
+           "Name": "Rule1Id",
+           "Type": "String"
+       },
+       {
+           "Name": "Rule2Id",
+           "Type": "String"
+       },
+       {
+           "Name": "ApplicationId",
+           "Type": "String"
+       },
+       {
+           "Name": "Type",
+           "Type": "String"
+       }
+   ]
+}
