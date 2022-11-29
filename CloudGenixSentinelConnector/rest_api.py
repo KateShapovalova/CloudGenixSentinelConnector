@@ -88,11 +88,10 @@ def get_events(headers, profile, start_time, end_time, hood_url):
     if 200 <= events.status_code <= 299:
         events_data = events.json()["items"]
         while events.json()["_offset"] is not None:
-            start_time = parser.parse(events.json()["_offset"], fuzzy=True).strftime("%d-%m-%yT%H:%M:%SZ")
             body = {
                 "severity": ["critical", "major", "minor"],
                 "query": {"type": ["alarm", "alert"]},
-                "_offset": None,
+                "_offset": events.json()["_offset"],
                 "view": {
                     "summary": False
                 },
@@ -103,13 +102,13 @@ def get_events(headers, profile, start_time, end_time, hood_url):
             except Exception as err:
                 logging.error("Something wrong. Exception error text: {}".format(err))
             if 200 <= events.status_code <= 299:
-                events_data.append(events.json()["items"])
+                events_data.extend(events.json()["items"])
     return events_data
 
 
 def transform_events(events, elements, sites, appdefs):
     for event in events:
-        event["event_id"] = event.pop("id")
+        event["event_id"] = event["id"]
         if event["code"] in descriptions:
             event["description"] = descriptions[event["code"]]
         if event["site_id"]:
@@ -119,6 +118,7 @@ def transform_events(events, elements, sites, appdefs):
         if event["entity_ref"].find('appdefs') != -1:
             event["application"] = next(item for item in appdefs if item["id"] == event["entity_ref"].split("/")[3])[
                 "display_name"]
+        event.pop("id")
         event.pop("entity_ref")
         event.pop("site_id")
         event.pop("element_id")
