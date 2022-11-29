@@ -42,22 +42,18 @@ def login(email, password, server_url):
     }
     try:
         result = requests.post(url=login_url, data=body)
-        logging.info(result.status_code)
-        hood_login_url = result.json()["api_endpoint"] + "/v2.0/api/login"
+        hood_url = result.json()["api_endpoint"]
+        hood_login_url = hood_url + "/v2.0/api/login"
         result = requests.post(url=hood_login_url, data=body)
-        logging.info(result.status_code)
-        logging.info(result.json())
         token = result.json()["x_auth_token"]
-        logging.info("x-auth-token: {}".format(token))
-        logging.info("second login: {}".format(result))
-        return token
+        return token, hood_url
     except Exception as err:
         logging.error("Something wrong. Exception error text: {}".format(err))
         raise err
 
 
-def get_profile(headers):
-    profile_url = "https://api.hood.cloudgenix.com/v2.0/api/profile"
+def get_profile(headers, hood_url):
+    profile_url = hood_url + "/v2.0/api/profile"
     result = {}
     try:
         result = requests.get(url=profile_url, headers=headers).json()
@@ -66,7 +62,7 @@ def get_profile(headers):
     return result
 
 
-def get_events(headers, profile, start_time, end_time):
+def get_events(headers, profile, start_time, end_time, hood_url):
     events_data = []
     events = {}
     body = {
@@ -79,7 +75,7 @@ def get_events(headers, profile, start_time, end_time):
         "start_time": start_time,
         "end_time": end_time
     }
-    events_url = "https://api.hood.cloudgenix.com/v3.0/api/tenants/" + profile["tenant_id"] + "/events/query"
+    events_url = hood_url + "/v3.0/api/tenants/" + profile["tenant_id"] + "/events/query"
     s = requests.Session()
     retries = Retry(total=5,
                     backoff_factor=0.4,
@@ -129,8 +125,8 @@ def transform_events(events, elements, sites, appdefs):
     return events
 
 
-def get_elements(headers, profile):
-    elements_url = "https://api.hood.cloudgenix.com/v2.0/api/tenants/" + profile["tenant_id"] + "/elements"
+def get_elements(headers, profile, hood_url):
+    elements_url = hood_url + "/v2.0/api/tenants/" + profile["tenant_id"] + "/elements"
     result = []
     try:
         result = requests.get(url=elements_url, headers=headers).json()["items"]
@@ -139,8 +135,8 @@ def get_elements(headers, profile):
     return result
 
 
-def get_sites(headers, profile):
-    sites_url = "https://api.hood.cloudgenix.com/v4.1/api/tenants/" + profile["tenant_id"] + "/sites"
+def get_sites(headers, profile, hood_url):
+    sites_url = hood_url + "/v4.1/api/tenants/" + profile["tenant_id"] + "/sites"
     result = []
     try:
         result = requests.get(url=sites_url, headers=headers).json()["items"]
@@ -149,8 +145,8 @@ def get_sites(headers, profile):
     return result
 
 
-def get_appdefs(headers, profile):
-    appdefs_url = "https://api.hood.cloudgenix.com/v2.0/api/tenants/" + profile["tenant_id"] + "/appdefs"
+def get_appdefs(headers, profile, hood_url):
+    appdefs_url = hood_url + "/v2.0/api/tenants/" + profile["tenant_id"] + "/appdefs"
     result = []
     try:
         result = requests.get(url=appdefs_url, headers=headers).json()["items"]

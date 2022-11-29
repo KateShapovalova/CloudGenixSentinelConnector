@@ -112,13 +112,13 @@ def main(mytimer: func.TimerRequest) -> None:
     logging.info('Starting program')
     start_time, end_time = generate_date()
     logging.info('Data processing. Period(UTC): {} - {}'.format(start_time, end_time))
-    token = login(email=email, password=password, server_url=dispatcher)
+    token, hood_url = login(email=email, password=password, server_url=dispatcher)
     headers = {"x-auth-token": token}
-    profile = get_profile(headers=headers)
-    elements = get_elements(headers=headers, profile=profile)
-    sites = get_sites(headers=headers, profile=profile)
-    appdefs = get_appdefs(headers=headers, profile=profile)
-    events = get_events(headers=headers, profile=profile, start_time=start_time, end_time=end_time)
+    profile = get_profile(headers=headers, hood_url=hood_url)
+    elements = get_elements(headers=headers, profile=profile, hood_url=hood_url)
+    sites = get_sites(headers=headers, profile=profile, hood_url=hood_url)
+    appdefs = get_appdefs(headers=headers, profile=profile, hood_url=hood_url)
+    events = get_events(headers=headers, profile=profile, start_time=start_time, end_time=end_time, hood_url=hood_url)
     events = transform_events(events=events, elements=elements, sites=sites, appdefs=appdefs)
 
     # Send data via data collector API
