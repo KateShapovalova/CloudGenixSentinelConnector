@@ -1,6 +1,5 @@
 import requests
 from requests.adapters import HTTPAdapter, Retry
-from dateutil import parser
 import logging
 
 descriptions = {
@@ -30,7 +29,12 @@ descriptions = {
     "DEVICESW_SYSLOGSERVERS_DOWN": "A Syslog Export daemon failed to connect with remote syslog server.",
     "DEVICEHW_ION9000X722FW_OUTOFDATE": "A very important firmware update is required for stable operation of ports 9 through 12 on this device.",
     "SPOKEHA_STATE_UPDATE": "Device changed its state from active to backup or backup to active. If the device changed its state to backup, and there is no other device eligible to become active, then network connectivity at the site will be affected.",
-    "DEVICESW_CRITICAL_PROCESSRESTART": "A critical software process on the device has restarted either due to an error or as a self-recovery method. Process restart as a self-recovery does not impact long-term functions on the device but can cause short term sub-optimal data plane functions and errors."
+    "DEVICESW_CRITICAL_PROCESSRESTART": "A critical software process on the device has restarted either due to an error or as a self-recovery method. Process restart as a self-recovery does not impact long-term functions on the device but can cause short term sub-optimal data plane functions and errors.",
+    "NETWORK_ANYNETLINK_DEGRADED": "Link is degraded with at least 1 VPNlink UP from the active spoke and 1 or more VPNlinks DOWN from the active spoke.",
+    "NETWORK_ANYNETLINK_DOWN": "Link is down with all VPNLinks DOWN from the active spoke.",
+    "SPOKEHA_CLUSTER_DEGRADED": "One of the element in the SpokeCluster has effective priority 0.",
+    "SPOKEHA_MULTIPLE_ACTIVE_DEVICES": "A critical alarm will be raised on the spoke HA cluster resource by the controller when both elements declare themselves to be 'active' (split brain).",
+    "PEERING_BGP_DOWN": "Routing peer session is down. If alternate paths are available traffic is not affected; else the fault is critical."
 }
 
 

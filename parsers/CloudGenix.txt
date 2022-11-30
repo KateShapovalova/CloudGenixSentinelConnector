@@ -4,7 +4,7 @@
 // Function usually takes 10-15 minutes to activate. You can then use function alias from any other queries (e.g. CloudGenix | take 10).
 // Reference : Using functions in Azure monitor log queries : https://docs.microsoft.com/azure/azure-monitor/log-query/functions
 CloudGenix_CL
-| extend EventVendor = 'CloudGenix',
+| extend EventVendor = 'Palo Alto Networks',
          EventProduct = 'CloudGenix',
          EventCount = 1,
          CreatedAt = _created_on_utc_t
@@ -38,7 +38,18 @@ CloudGenix_CL
         ConflictAppId = info_conflict_app_id_s,
         Rule1Id = info_rule1_id_s,
         Rule2Id = info_rule2_id_s,
-        ApplicationId = info_app_id_s
+        ApplicationId = info_app_id_s,
+        IpAddr = info_ip_address_s,
+        MacAddr = info_mac_address_s,
+        ProcessName = info_process_name_s,
+        Protocol = info_protocol_s,
+        ServerInfo = info_server_info_s,
+        Details = info_detail_s,
+        PeerIp = info_peer_ip_s,
+        PeerState = info_peer_state_s,
+        PeerType = info_peer_type_s,
+        State = info_state_s,
+        VpnReasons = info_vpn_reasons_s
 |project-away   _created_on_utc_t,
                 _etag_d,
                 _updated_on_utc_t,
@@ -70,4 +81,18 @@ CloudGenix_CL
                 info_network_policysets_s,
                 info_network_policysetstack_id_s,
                 info_network_policyrules_s,
-                info_missing_labels_s
+                info_missing_labels_s,
+                info_ip_address_s,
+                info_mac_address_s,
+                info_process_name_s,
+                info_protocol_s,
+                info_server_info_s,
+                info_detail_s,
+                info_peer_ip_s,
+                info_peer_state_s,
+                info_peer_type_s,
+                info_elements_s,
+                info_state_s,
+                info_interface_id_s,
+                info_vpn_reasons_s,
+                info_element_id_s
