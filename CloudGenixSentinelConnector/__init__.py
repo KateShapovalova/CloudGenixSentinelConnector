@@ -4,7 +4,8 @@ import hashlib
 import hmac
 import base64
 import logging
-from .rest_api import login, get_profile, get_elements, get_sites, get_events, get_appdefs, transform_events
+from .rest_api import login, get_profile, get_elements, get_sites, get_events, get_appdefs, transform_events, \
+    auditlog_query
 import os
 from datetime import datetime, timedelta
 import json
@@ -108,6 +109,7 @@ def gen_chunks(data):
 def main(mytimer: func.TimerRequest) -> None:
     if mytimer.past_due:
         logging.info('The timer is past due!')
+    INCLUDE_SYSLOGS = False
     logging.getLogger().setLevel(logging.INFO)
     logging.info('Starting program')
     start_time, end_time = generate_date()
@@ -115,11 +117,19 @@ def main(mytimer: func.TimerRequest) -> None:
     token, hood_url = login(email=email, password=password, server_url=dispatcher)
     headers = {"x-auth-token": token}
     profile = get_profile(headers=headers, hood_url=hood_url)
-    elements = get_elements(headers=headers, profile=profile, hood_url=hood_url)
-    sites = get_sites(headers=headers, profile=profile, hood_url=hood_url)
-    appdefs = get_appdefs(headers=headers, profile=profile, hood_url=hood_url)
-    events = get_events(headers=headers, profile=profile, start_time=start_time, end_time=end_time, hood_url=hood_url)
-    events = transform_events(events=events, elements=elements, sites=sites, appdefs=appdefs)
+    audit_logs = auditlog_query(headers=headers, tenant_id=profile["tenant_id"], hood_url=hood_url,
+                                start_time=start_time, end_time=end_time)
+
+    if INCLUDE_SYSLOGS:
+        elements = get_elements(headers=headers, profile=profile, hood_url=hood_url)
+        sites = get_sites(headers=headers, profile=profile, hood_url=hood_url)
+        appdefs = get_appdefs(headers=headers, profile=profile, hood_url=hood_url)
+        events = get_events(headers=headers, profile=profile, start_time=start_time, end_time=end_time,
+                            hood_url=hood_url)
+        events = transform_events(events=events, elements=elements, sites=sites, appdefs=appdefs)
+
+        # Send data via data collector API
+        gen_chunks(events)
 
     # Send data via data collector API
-    gen_chunks(events)
+    gen_chunks(audit_logs)

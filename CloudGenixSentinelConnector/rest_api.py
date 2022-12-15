@@ -1,6 +1,8 @@
 import requests
 from requests.adapters import HTTPAdapter, Retry
 import logging
+import datetime
+import time
 
 descriptions = {
     "DEVICESW_FLOWS_DISCONNECTED_FROM_CONTROLLER": "Device flows connection has remained disconnected from the Controller for a prolonged duration.",
@@ -64,6 +66,56 @@ def get_profile(headers, hood_url):
     except Exception as err:
         logging.error("Something wrong. Exception error text: {}".format(err))
     return result
+
+
+def auditlog_query(headers, hood_url, start_time, end_time, tenant_id=None, api_version="v2.0", limit=200):
+    audit_logs = []
+    result = {}
+    url = hood_url + "/{}/api/tenants/{}/auditlog/query".format(api_version, tenant_id)
+
+    body = {
+        "query_params": {
+            "and": {
+                "response_ts": {
+                    "gte": time.mktime(datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%SZ").timetuple())*1000,
+                    "lte": time.mktime(datetime.datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%SZ").timetuple())*1000}
+            }
+        },
+        "sort_params": {
+            "response_ts": "asc"
+        },
+        "limit": limit
+    }
+
+    try:
+        result = requests.post(url=url, headers=headers, json=body)
+    except Exception as err:
+        logging.error("Something wrong. Exception error text: {}".format(err))
+    if 200 <= result.status_code <= 299:
+        audit_logs = result.json()["items"]
+        while result.json()["total_count"] != 0:
+            start_time = result.json()["items"][-1]["_created_on_utc"]/10000
+            body = {
+                "query_params": {
+                    "and": {
+                        "response_ts": {
+                            "gte": start_time,
+                            "lte": time.mktime(
+                                datetime.datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%SZ").timetuple()) * 1000}
+                    }
+                },
+                "sort_params": {
+                    "response_ts": "asc"
+                },
+                "limit": limit
+            }
+            try:
+                result = requests.post(url=url, headers=headers, json=body)
+            except Exception as err:
+                logging.error("Something wrong. Exception error text: {}".format(err))
+            if 200 <= result.status_code <= 299:
+                audit_logs.extend(result.json()["items"])
+    return audit_logs
 
 
 def get_events(headers, profile, start_time, end_time, hood_url):
