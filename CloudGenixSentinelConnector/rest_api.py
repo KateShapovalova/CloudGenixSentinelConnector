@@ -2,7 +2,6 @@ import requests
 from requests.adapters import HTTPAdapter, Retry
 import logging
 from datetime import datetime, timezone
-import re
 
 descriptions = {
     "DEVICESW_FLOWS_DISCONNECTED_FROM_CONTROLLER": "Device flows connection has remained disconnected from the Controller for a prolonged duration.",
