@@ -4,15 +4,12 @@ import hashlib
 import hmac
 import base64
 import logging
-# from .rest_api import login, get_profile, get_elements, get_sites, get_events, get_appdefs, transform_events, \
-#     auditlog_query, get_operators
 from rest_api import login, get_profile, get_elements, get_sites, get_events, get_appdefs, transform_events, \
     auditlog_query, get_operators
 import os
 from datetime import datetime, timedelta
 import json
-# from .state_manager import StateManager
-from state_manager import StateManager
+from .state_manager import StateManager
 import re
 import azure.functions as func
 
@@ -41,14 +38,14 @@ if (not match):
 
 def generate_date():
     current_time = datetime.utcnow().replace(second=0, microsecond=0) - timedelta(minutes=10)
-    # state = StateManager(connection_string=connection_string)
-    past_time = None # state.get()
+    state = StateManager(connection_string=connection_string)
+    past_time = state.get()
     if past_time is not None:
         logging.info("The last time point is: {}".format(past_time))
     else:
         logging.info("There is no last time point, trying to get events for last hour.")
         past_time = (current_time - timedelta(minutes=10)).strftime("%Y-%m-%dT%H:%M:%SZ")
-    # state.post(current_time.strftime("%Y-%m-%dT%H:%M:%SZ"))
+    state.post(current_time.strftime("%Y-%m-%dT%H:%M:%SZ"))
     return past_time, current_time.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
@@ -109,10 +106,9 @@ def gen_chunks(data):
         post_data(chunk)
 
 
-# def main(mytimer: func.TimerRequest) -> None:
-#     if mytimer.past_due:
-#         logging.info('The timer is past due!')
-def main():
+def main(mytimer: func.TimerRequest) -> None:
+    if mytimer.past_due:
+        logging.info('The timer is past due!')
     INCLUDE_SYSLOGS = False
     logging.getLogger().setLevel(logging.INFO)
     logging.info('Starting program')
@@ -122,14 +118,8 @@ def main():
     headers = {"x-auth-token": token}
     profile = get_profile(headers=headers, hood_url=hood_url)
     operators = get_operators(headers=headers, hood_url=hood_url, profile=profile)
-
-    with open("operators.json", "w") as f:
-        f.write(json.dumps(operators))
-
     audit_logs = auditlog_query(headers=headers, profile=profile, hood_url=hood_url,
                                 start_time=start_time, end_time=end_time, operators=operators)
-    with open("audit_logs.json", "w") as f:
-        f.write(json.dumps(audit_logs))
 
 
 
@@ -146,6 +136,3 @@ def main():
 
     # Send data via data collector API
     gen_chunks(audit_logs)
-
-
-main()
