@@ -7,17 +7,18 @@ CloudGenix_CL
 | extend EventVendor = 'Palo Alto Networks',
          EventProduct = 'CloudGenix',
          EventCount = 1,
-         CreatedAt = _created_on_utc_d
+         CreatedAt = _created_on_utc_t
 | extend EventOriginalUid = id_s,
         Schema = _schema_d,
         Etag = _etag_d,
-        EventEndTime = _updated_on_utc_d,
+        EventEndTime = _updated_on_utc_t,
+        StatusCode = response_code_d,
+        OperatorName = operator_name_s,
         ErrorCode = tostring(parse_json(response_body_s)._error[0].code),
         WarningCode = tostring(parse_json(response_body_s)._warning[0].code),
         ErrorMessage = tostring(parse_json(response_body_s)._error[0].message),
         WarningMessage = tostring(parse_json(response_body_s)._warning[0].message),
         TenantId = tenant_id_s,
-        OperatorId = operator_id_s,
         OperatorTenantId = operator_tenant_id_s,
         SessionKey = session_key_c_s,
         RequestId = request_id_s,
@@ -30,7 +31,6 @@ CloudGenix_CL
         EventType = request_type_s,
         RequestUri = request_uri_s,
         RequestBody = request_body_s,
-        ResponseCode = response_code_d,
         TimeOfProcessing = time_ms_d,
         RequestContentLength = request_content_length_d,
         ResponseContentLength = response_content_length_d,
@@ -60,4 +60,7 @@ CloudGenix_CL
         response_content_length_d,
         request_ts_d,
         response_ts_d,
-        _created_on_utc_d
+        _created_on_utc_d,
+        _created_on_utc_t,
+        _updated_on_utc_t,
+        operator_name_s
